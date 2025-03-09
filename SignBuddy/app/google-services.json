@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1036172716209",
+    "project_id": "signbuddy-4d753",
+    "storage_bucket": "signbuddy-4d753.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1036172716209:android:ef63c31a6a0ebd399f5a90",
+        "android_client_info": {
+          "package_name": "hu.dancsomarci.signbuddy"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDbrqsSbLCFKmYYGHi-y9Q7poz6_kKQkN4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
