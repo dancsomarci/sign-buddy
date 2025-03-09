@@ -1,16 +1,8 @@
-# Házi feladat specifikáció
-
-Információk [itt](https://viauav21.github.io/laborok/hf)
-
-## Androidalapú szoftverfejlesztés
-### [Dátum - 2023-24 2. félév]
-### [Dancsó Marcell] - ([AZTVS7])
-### [dancsomarci@gmail.com] 
-### Laborvezető: [Kövesdán Gábor]
+# Sign Buddy
 
 ## Bemutatás
 
-A feladat jelnyelv fordításhoz adatok gyűjtése. Egy újszerű megközelítés a feladatra, hogy képek/videó helyett, póz approximációval először jellegzetes pontokat azonosítunk be a kézen, majd a modellek ebből tanulnak.
+Az alkalmazás jelnyelv fordításhoz gyűjt adatokat. Egy újszerű megközelítés a feladatra, hogy képek/videó helyett, póz approximációval először jellegzetes pontokat azonosítunk be a kézen, majd a modellek ebből tanulnak.
 Google MediaPipe Hands modell segítségével ez a lépés elvégezhető android platformon is, majd egy megfelelő backend szolgáltatás össze is gyűjti az adatokat.
 
 ## Főbb funkciók
@@ -27,24 +19,6 @@ Google MediaPipe Hands modell segítségével ez a lépés elvégezhető android
 - Bejelentkezett felhasználó adatainak megtekintése.
 - Felvétel segítésére mozgatható (draggable) felvétel gomb.
 - Bottom navigation bar.
-
-## Választott technológiák
-
-- UI: A felhasználói felület Jetpack Compose-ban és MVI architektúrával
-- Firebase
-- Firestore
-- Animáció
-- MI modell futtatása Android környezetben
-- Kamerakezelés Jetpack Compose-ban
-
-## Technikai megvalósítás
-
-- Projekt struktúra: feature-first
-- DI: Hilt
-- Navigáció: Compose Navigation
-- Póz felismerés: Mediapipe Hands
-- Engedélykezelés: Accompanist plugin
-- Kamerakezelés: Compose alapú ImageAnalysis + PreviewView + Fragment alapú saját OverlayView
 
 ## Képek:
 
