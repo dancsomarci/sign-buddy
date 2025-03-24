@@ -4,7 +4,6 @@ import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
-import com.google.firebase.auth.userProfileChangeRequest
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
@@ -33,11 +32,10 @@ class FirebaseAuthService @Inject constructor(
     }
 
     override suspend fun updateDisplayName(newDisplayName: String) {
-        val profileUpdates = userProfileChangeRequest {
-            displayName = newDisplayName
-        }
-
-        firebaseAuth.currentUser!!.updateProfile(profileUpdates).await()
+        val profileChangeRequest = UserProfileChangeRequest.Builder()
+            .setDisplayName(newDisplayName)
+            .build()
+        firebaseAuth.currentUser?.updateProfile(profileChangeRequest)?.await()
     }
 
     override suspend fun signUp(email: String, password: String) {
