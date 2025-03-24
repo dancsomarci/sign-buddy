@@ -35,12 +35,9 @@
     </string-array>
 
     <string name="unknown_error">Unknown Error</string>
-    <string name="textfield_label_email">Email</string>
-    <string name="textfield_label_password">Password</string>
     <string name="button_text_sign_in">Sign in</string>
     <string name="button_text_no_account">No Account</string>
     <string name="button_text_sign_up">Sign Up</string>
-    <string name="textfield_label_confirm_password">Confirm Password</string>
     <string name="app_bar_title_sign_up">Sign Up</string>
     <string name="button_text_anonymous_sign_in">Anonymous</string>
 

@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ExitToApp
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.ExitToApp
@@ -100,7 +101,8 @@ fun Modifier.card(): Modifier {
 fun ExitAppCard(onSignOutClick: () -> Unit) {
     var showExitAppDialog by remember { mutableStateOf(false) }
 
-    AccountCenterCard(stringResource(R.string.sign_out), Icons.Filled.ExitToApp, Modifier.card()) {
+    AccountCenterCard(stringResource(R.string.sign_out),
+        Icons.AutoMirrored.Filled.ExitToApp, Modifier.card()) {
         showExitAppDialog = true
     }
 

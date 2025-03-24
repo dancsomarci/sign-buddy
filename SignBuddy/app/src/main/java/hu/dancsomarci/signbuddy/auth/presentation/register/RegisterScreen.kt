@@ -1,6 +1,5 @@
 package hu.dancsomarci.signbuddy.auth.presentation.register
 
-import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -25,7 +24,6 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import hu.dancsomarci.signbuddy.auth.presentation.common.EmailTextField
 import hu.dancsomarci.signbuddy.auth.presentation.common.PasswordTextField
 import hu.dancsomarci.signbuddy.auth.presentation.common.TodoAppBar
@@ -33,6 +31,7 @@ import hu.dancsomarci.signbuddy.auth.presentation.util.UiEvent
 import hu.dancsomarci.signbuddy.ui.common.VideoPlayer
 import kotlinx.coroutines.launch
 import hu.dancsomarci.signbuddy.R.string as StringResources
+import androidx.core.net.toUri
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -86,13 +85,11 @@ fun RegisterScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             VideoPlayer(
-                videoUri = Uri.parse(
-                    "android.resource://hu.dancsomarci.signbuddy/raw/example_video"
-                )
+                videoUri = "android.resource://hu.dancsomarci.signbuddy/raw/example_video".toUri()
             )
             EmailTextField(
                 value = state.email, 
-                label = stringResource(id = StringResources.textfield_label_email), 
+                label = stringResource(id = StringResources.email),
                 onValueChange = { viewModel.onEvent(RegisterUserEvent.EmailChanged(it)) },
                 onDone = {},
                 imeAction = ImeAction.Next,
@@ -100,7 +97,7 @@ fun RegisterScreen(
             )
             PasswordTextField(
                 value = state.password,
-                label = stringResource(id = StringResources.textfield_label_password),
+                label = stringResource(id = StringResources.password),
                 onValueChange = { viewModel.onEvent(RegisterUserEvent.PasswordChanged(it)) },
                 onDone = {},
                 imeAction = ImeAction.Next,
@@ -110,7 +107,7 @@ fun RegisterScreen(
             )
             PasswordTextField(
                 value = state.confirmPassword,
-                label = stringResource(id = StringResources.textfield_label_confirm_password),
+                label = stringResource(id = StringResources.confirm_password),
                 onValueChange = { viewModel.onEvent(RegisterUserEvent.ConfirmPasswordChanged(it)) },
                 onDone = {},
                 modifier = Modifier.padding(bottom = 10.dp),

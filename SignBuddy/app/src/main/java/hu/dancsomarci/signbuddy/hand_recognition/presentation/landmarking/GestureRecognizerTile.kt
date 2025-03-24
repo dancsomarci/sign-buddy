@@ -20,7 +20,6 @@ import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
@@ -53,7 +52,7 @@ class GestureRecognizerBuilder(
     @Composable
     fun Build(modifier: Modifier = Modifier) {
         val lensFacing = CameraSelector.LENS_FACING_FRONT
-        val lifecycleOwner = LocalLifecycleOwner.current
+        val lifecycleOwner = androidx.lifecycle.compose.LocalLifecycleOwner.current
         val context = LocalContext.current
         val previewView = remember { PreviewView(context) }
         val overlayView = remember { OverlayView(context, null) }
@@ -145,7 +144,7 @@ class GestureRecognizerBuilder(
             cameraProvider.unbindAll()
             cameraProvider.bindToLifecycle(lifecycleOwner, cameraxSelector, preview, imageAnalyzer)
 
-            preview.setSurfaceProvider(previewView.surfaceProvider)
+            preview.surfaceProvider = previewView.surfaceProvider
 
             previewView.apply {
                 scaleType = PreviewView.ScaleType.FIT_START
@@ -167,7 +166,7 @@ class GestureRecognizerBuilder(
         //TODO https://stackoverflow.com/questions/66546962/jetpack-compose-how-do-i-refresh-a-screen-when-app-returns-to-foreground
         //TODO test: https://stackoverflow.com/questions/75287804/how-to-stop-mediaplayer-when-the-app-is-backgrounded-in-jetpack-compose
         val eventHandler = rememberUpdatedState(onEvent)
-        val lifecycleOwner = rememberUpdatedState(LocalLifecycleOwner.current)
+        val lifecycleOwner = rememberUpdatedState(androidx.lifecycle.compose.LocalLifecycleOwner.current)
 
         DisposableEffect(lifecycleOwner.value) {
             val lifecycle = lifecycleOwner.value.lifecycle

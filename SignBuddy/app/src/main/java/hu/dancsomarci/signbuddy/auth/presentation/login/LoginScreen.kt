@@ -1,6 +1,5 @@
 package hu.dancsomarci.signbuddy.auth.presentation.login
 
-import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -31,6 +30,7 @@ import hu.dancsomarci.signbuddy.auth.presentation.util.UiEvent
 import hu.dancsomarci.signbuddy.ui.common.VideoPlayer
 import kotlinx.coroutines.launch
 import hu.dancsomarci.signbuddy.R.string as StringResources
+import androidx.core.net.toUri
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -76,13 +76,11 @@ fun LoginScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             VideoPlayer(
-                videoUri = Uri.parse(
-                    "android.resource://hu.dancsomarci.signbuddy/raw/example_video"
-                )
+                videoUri = "android.resource://hu.dancsomarci.signbuddy/raw/example_video".toUri()
             )
             EmailTextField(
                 value = state.email, 
-                label = stringResource(id = StringResources.textfield_label_email), 
+                label = stringResource(id = StringResources.email),
                 onValueChange = { viewModel.onEvent(LoginUserEvent.EmailChanged(it)) },
                 onDone = {},
                 imeAction = ImeAction.Next,
@@ -90,7 +88,7 @@ fun LoginScreen(
             )
             PasswordTextField(
                 value = state.password,
-                label = stringResource(id = StringResources.textfield_label_password),
+                label = stringResource(id = StringResources.password),
                 onValueChange = { viewModel.onEvent(LoginUserEvent.PasswordChanged(it)) },
                 onDone = {},
                 modifier = Modifier.padding(bottom = 10.dp),
