@@ -12,27 +12,21 @@ import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleEventObserver
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.lifecycleScope
 import com.google.mediapipe.tasks.vision.core.RunningMode
 import hu.dancsomarci.signbuddy.hand_recognition.domain.model.Landmark
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
+import androidx.lifecycle.Lifecycle
 
 @Composable
 fun GestureRecognizerTile(
@@ -57,14 +51,6 @@ class GestureRecognizerBuilder(
         val previewView = remember { PreviewView(context) }
         val overlayView = remember { OverlayView(context, null) }
         val scope = rememberCoroutineScope()
-
-        OnLifecycleEvent { owner, event ->
-            when (event) {
-                Lifecycle.Event.ON_RESUME -> owner.lifecycleScope.launch { doOnResume() }
-                Lifecycle.Event.ON_PAUSE -> owner.lifecycleScope.launch { doOnPause() }
-                else -> {}
-            }
-        }
 
         LaunchedEffect(lensFacing) {
             handLandmarkerHelper = HandLandmarkerHelper(
@@ -158,44 +144,6 @@ class GestureRecognizerBuilder(
         Box(contentAlignment = Alignment.Center) {
             AndroidView(factory = { previewView })
             AndroidView(factory = { overlayView })
-        }
-    }
-
-    @Composable
-    fun OnLifecycleEvent(onEvent: (owner: LifecycleOwner, event: Lifecycle.Event) -> Unit) {
-        //TODO https://stackoverflow.com/questions/66546962/jetpack-compose-how-do-i-refresh-a-screen-when-app-returns-to-foreground
-        //TODO test: https://stackoverflow.com/questions/75287804/how-to-stop-mediaplayer-when-the-app-is-backgrounded-in-jetpack-compose
-        val eventHandler = rememberUpdatedState(onEvent)
-        val lifecycleOwner = rememberUpdatedState(androidx.lifecycle.compose.LocalLifecycleOwner.current)
-
-        DisposableEffect(lifecycleOwner.value) {
-            val lifecycle = lifecycleOwner.value.lifecycle
-            val observer = LifecycleEventObserver { owner, event ->
-                eventHandler.value(owner, event)
-            }
-
-            lifecycle.addObserver(observer)
-            onDispose {
-                lifecycle.removeObserver(observer)
-            }
-        }
-    }
-
-    private suspend fun doOnResume() {
-        if (this::handLandmarkerHelper.isInitialized){
-            withContext(Dispatchers.Default) {
-                if (handLandmarkerHelper.isClose()) {
-                    handLandmarkerHelper.setupHandLandmarker()
-                }
-            }
-        }
-    }
-
-    private suspend fun doOnPause() {
-        if (this::handLandmarkerHelper.isInitialized){
-            withContext(Dispatchers.Default) {
-                handLandmarkerHelper.clearHandLandmarker()
-            }
         }
     }
 
