@@ -26,7 +26,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
-import androidx.lifecycle.Lifecycle
 
 @Composable
 fun GestureRecognizerTile(

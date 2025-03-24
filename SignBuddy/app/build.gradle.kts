@@ -14,7 +14,7 @@ android {
     defaultConfig {
         applicationId = "hu.dancsomarci.signbuddy"
         minSdk = 24
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -72,6 +72,13 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
+//    implementation(libs.tensorflow.lite.support)
+//    implementation(libs.tensorflow.lite.metadata)
+    implementation(libs.litert)
+    implementation(libs.litert.support)
+    implementation(libs.litert.metadata)
+    implementation(libs.litert.gpu)
+    implementation(libs.litert.gpu.api)
     implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.tasks.vision)
     implementation(libs.androidx.camera.core)

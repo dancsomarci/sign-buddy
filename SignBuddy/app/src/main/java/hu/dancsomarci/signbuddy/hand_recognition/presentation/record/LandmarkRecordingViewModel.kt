@@ -1,6 +1,7 @@
 package hu.dancsomarci.signbuddy.hand_recognition.presentation.record
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,12 +17,17 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-//import org.tensorflow.lite.DataType
-//import org.tensorflow.lite.support.tensorbuffer.TensorBuffer
+import org.tensorflow.lite.DataType
+import org.tensorflow.lite.support.tensorbuffer.TensorBuffer
 import javax.inject.Inject
-//import hu.dancsomarci.signbuddy.ml.TestModel
+import hu.dancsomarci.signbuddy.ml.TestModel
+import org.tensorflow.lite.Interpreter
+import org.tensorflow.lite.gpu.CompatibilityList
+import org.tensorflow.lite.gpu.GpuDelegate
+import org.tensorflow.lite.support.common.FileUtil
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import java.nio.FloatBuffer
 
 @HiltViewModel
 class LandmarkRecordingViewModel @Inject constructor(
@@ -42,8 +48,7 @@ class LandmarkRecordingViewModel @Inject constructor(
                         recordedLandmarks = it.recordedLandmarks + event.landmark
                     )}
                 }
-
-
+                recognizeGesture(event.landmark)
             }
             is LandmarkRecordingEvent.ToggleRecording -> {
                 if (state.value.isRecording){
@@ -72,7 +77,33 @@ class LandmarkRecordingViewModel @Inject constructor(
         }
     }
 
-//    private val tfModel = TestModel.newInstance(context)
+    private val tfModel = TestModel.newInstance(context)
+    private var interpreter: Interpreter? = null
+
+    enum class Delegate {
+        CPU, NNAPI
+    }
+    val compatList = CompatibilityList()
+
+    init {
+        val litertBuffer = FileUtil.loadMappedFile(context, "test_model.tflite")
+        val options = Interpreter.Options().apply {
+            if(compatList.isDelegateSupportedOnThisDevice){
+                Log.d("GPU", "Running on GPU:)")
+                // if the device has a supported GPU, add the GPU delegate
+                val delegateOptions = compatList.bestOptionsForThisDevice
+                this.addDelegate(GpuDelegate(delegateOptions))
+            } else {
+                //Log.d("GPU", "Not on GPU:(")
+                // if the GPU is not supported, run on 4 threads
+                numThreads = 4
+                useNNAPI = false //Delegate.NNAPI
+                //useXNNPACK
+            }
+
+        }
+        interpreter = Interpreter(litertBuffer, options)
+    }
 
     private fun recognizeGesture(lm: Landmark){
         // Convert the filtered list to ByteBuffer
@@ -81,14 +112,26 @@ class LandmarkRecordingViewModel @Inject constructor(
         filteredLm.forEach { byteBuffer.putFloat(it) }
 
         // Creates inputs for reference.
-//        val inputFeature0 = TensorBuffer.createFixedSize(intArrayOf(1, 42), DataType.FLOAT32)
-//        inputFeature0.loadBuffer(byteBuffer)
-//
+        val inputFeature0 = TensorBuffer.createFixedSize(intArrayOf(1, 42), DataType.FLOAT32)
+        // inputFeature0.loadBuffer(byteBuffer)
+
 //        val outputs = tfModel.process(inputFeature0)
 //        val outputFeature0 = outputs.outputFeature0AsTensorBuffer
-//
 //        val outputArray = outputFeature0.floatArray
 
+        //val outputBuffer = TensorBuffer.createFixedSize(intArrayOf(1, 23), DataType.FLOAT32)
+
+        val inputBuffer = FloatBuffer.allocate(42) // TODO Only output needs to be FloatBuffer apparently
+        val outputBuffer = FloatBuffer.allocate(23)
+        Log.d("MyViewModel", interpreter!!.getInputTensor(0).dataType().name)
+        Log.d("MyViewModel", interpreter!!.getInputTensor(0).shape().joinToString { it.toString() })
+
+        //outputBuffer.rewind() TODO figure out this rewind thing
+        interpreter?.run(inputBuffer, outputBuffer)
+        Log.d("MyViewModel", "Hello")
+        val outputArray = outputBuffer.array()
+
+        Log.d("MyViewModel", outputArray.joinToString { it.toString() })
 
         // Releases model resources if no longer used.
         // model.close()
