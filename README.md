@@ -1,5 +1,11 @@
 # Sign Buddy
 
+Linked repos:
+
+- [Model conversion research](https://github.com/dancsomarci/dip_terv)
+- [ASL Translation Original](https://github.com/dancsomarci/sign-language)
+- [ASL Neural Graph Translation](https://github.com/dancsomarci/asl-neural-graph-translation)
+
 ## Bemutatás
 
 Az alkalmazás jelnyelv fordításhoz gyűjt adatokat. Egy újszerű megközelítés a feladatra, hogy képek/videó helyett, póz approximációval először jellegzetes pontokat azonosítunk be a kézen, majd a modellek ebből tanulnak.
