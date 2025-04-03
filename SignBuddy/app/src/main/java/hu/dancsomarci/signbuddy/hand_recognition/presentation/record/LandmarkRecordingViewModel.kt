@@ -86,7 +86,7 @@ class LandmarkRecordingViewModel @Inject constructor(
     val compatList = CompatibilityList()
 
     init {
-        val litertBuffer = FileUtil.loadMappedFile(context, "test_model.tflite")
+        val litertBuffer = FileUtil.loadMappedFile(context, "torch_mlp.tflite")
         val options = Interpreter.Options().apply {
             if(compatList.isDelegateSupportedOnThisDevice){
                 Log.d("GPU", "Running on GPU:)")
