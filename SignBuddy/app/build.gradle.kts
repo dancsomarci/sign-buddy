@@ -1,3 +1,5 @@
+import com.android.build.api.dsl.AndroidResources
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
@@ -54,6 +56,11 @@ android {
         viewBinding = true
         mlModelBinding = true
     }
+
+    // TODO validate
+    fun AndroidResources.() {
+        noCompress += "tflite"
+    }
 }
 
 dependencies {
@@ -72,8 +79,6 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
-//    implementation(libs.tensorflow.lite.support)
-//    implementation(libs.tensorflow.lite.metadata)
     implementation(libs.litert)
     implementation(libs.litert.support)
     implementation(libs.litert.metadata)
