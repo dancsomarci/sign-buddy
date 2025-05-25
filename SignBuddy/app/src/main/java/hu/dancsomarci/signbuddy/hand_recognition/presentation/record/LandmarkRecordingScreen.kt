@@ -1,6 +1,13 @@
 package hu.dancsomarci.signbuddy.hand_recognition.presentation.record
 
+import android.annotation.SuppressLint
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
@@ -8,10 +15,13 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import hu.dancsomarci.signbuddy.auth.presentation.util.UiEvent
@@ -21,6 +31,7 @@ import hu.dancsomarci.signbuddy.hand_recognition.presentation.landmarking.Gestur
 import kotlinx.coroutines.launch
 import hu.dancsomarci.signbuddy.R
 
+@SuppressLint("DefaultLocale")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LandmarkRecordingScreen(
@@ -52,6 +63,24 @@ fun LandmarkRecordingScreen(
             topBar = {
                 TopAppBar(
                     title = { Text(text = "Sign Buddy") },
+                    actions = {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(8.dp),
+                            modifier = Modifier.padding(end = 12.dp)
+                        ) {
+                            Text(
+                                text = state.recognizedCharacter?.uppercase() ?: "",
+                                fontSize = 20.sp,
+                                color = Color.Gray
+                            )
+//                            Text(
+//                                text = String.format("%.2f", state.confidence),
+//                                fontSize = 16.sp,
+//                                color = Color.Gray
+//                            )
+                        }
+                    }
                 )
             },
             bottomBar = {
@@ -79,6 +108,7 @@ fun LandmarkRecordingScreen(
                 onResult = {
                 viewModel.onEvent(LandmarkRecordingEvent.NewFrameRecognized(it))
             })
+
         }
     }
 }

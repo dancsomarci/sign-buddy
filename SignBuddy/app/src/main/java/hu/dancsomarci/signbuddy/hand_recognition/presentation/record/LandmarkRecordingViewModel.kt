@@ -24,7 +24,7 @@ class LandmarkRecordingViewModel @Inject constructor(
     @ApplicationContext context: Context,
     private val landmarkUseCases: LandmarkSequenceUseCases
 ): ViewModel() {
-    private val _state = MutableStateFlow(LandmarkRecordingState())
+    private val _state = MutableStateFlow(LandmarkRecordingState(recognizedCharacter="d"))
     val state = _state.asStateFlow()
 
     private val _uiEvent = Channel<UiEvent>()
@@ -78,6 +78,8 @@ class LandmarkRecordingViewModel @Inject constructor(
 
 data class LandmarkRecordingState(
     val isRecording: Boolean = false,
+    val recognizedCharacter: String? = null,
+    val confidence: Float = 0F,
     val recordedLandmarks: List<Landmark> = emptyList()
 )
 

@@ -39,8 +39,7 @@ class SignRecognitionHelper(private val context: Context) {
         val compatList = CompatibilityList()
         val options = Interpreter.Options().apply {
             if(compatList.isDelegateSupportedOnThisDevice){
-                val delegateOptions = compatList.bestOptionsForThisDevice
-                this.addDelegate(GpuDelegate(delegateOptions))
+                addDelegate(GpuDelegate(compatList.bestOptionsForThisDevice))
                 Log.d(TAG, "Selected GPU")
             } else {
                 Log.d(TAG, "Selected CPU")
