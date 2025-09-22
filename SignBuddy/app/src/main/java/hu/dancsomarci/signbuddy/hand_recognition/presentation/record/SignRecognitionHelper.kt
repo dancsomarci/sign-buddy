@@ -17,7 +17,7 @@ import org.tensorflow.lite.gpu.GpuDelegate
 class SignRecognitionHelper(private val context: Context) {
     companion object {
         private const val TAG = "SignRecognitionHelper"
-        private const val MODEL_PATH = "gat_test2.tflite"
+        private const val MODEL_PATH = "tf_mobile_gnn.tflite"
     }
 
     private var interpreter: Interpreter? = null
