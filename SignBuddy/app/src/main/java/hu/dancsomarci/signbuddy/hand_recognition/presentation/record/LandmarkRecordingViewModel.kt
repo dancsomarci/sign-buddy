@@ -32,6 +32,20 @@ class LandmarkRecordingViewModel @Inject constructor(
 
     private val model: SignRecognitionHelper = SignRecognitionHelper(context)
 
+    init {
+        viewModelScope.launch {
+            model.result.collect { result ->
+                _state.update { current ->
+                    current.copy(
+                        recognizedCharacter = result.gesture,
+                        inferenceTime = result.inferenceTime,
+                        confidence = result.confidence,
+                    )
+                }
+            }
+        }
+    }
+
     fun onEvent(event: LandmarkRecordingEvent){
         when(event){
             is LandmarkRecordingEvent.NewFrameRecognized -> {
@@ -71,7 +85,7 @@ class LandmarkRecordingViewModel @Inject constructor(
 
     private fun recognizeGesture(lm: Landmark){
         viewModelScope.launch {
-            model.recognizeGesture()
+            model.recognizeGesture(lm)
         }
     }
 }
@@ -79,7 +93,8 @@ class LandmarkRecordingViewModel @Inject constructor(
 data class LandmarkRecordingState(
     val isRecording: Boolean = false,
     val recognizedCharacter: String? = null,
-    val confidence: Float = 0F,
+    val confidence: Float = 1F,
+    val inferenceTime: Long = 0L,
     val recordedLandmarks: List<Landmark> = emptyList()
 )
 

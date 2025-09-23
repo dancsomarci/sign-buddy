@@ -24,8 +24,13 @@ import com.google.mediapipe.tasks.vision.core.RunningMode
 import hu.dancsomarci.signbuddy.hand_recognition.domain.model.Landmark
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.nio.FloatBuffer
+import kotlin.collections.component1
+import kotlin.collections.component2
+import kotlin.collections.component3
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
+import kotlin.math.abs
 
 @Composable
 fun GestureRecognizerTile(
@@ -67,10 +72,9 @@ class GestureRecognizerBuilder(
                 onResults = { resultBundle ->
                     val detectionResult = resultBundle.results[0]
                     val detectedLandmarks = detectionResult.landmarks()
-                    if (detectedLandmarks.size != 0){
-                        val xCords = detectionResult.landmarks()[0].map { it.x() }
-                        val yCords = detectionResult.landmarks()[0].map { it.y() }
-                        onResult(Landmark(landmarks = xCords + yCords))
+                    if (detectedLandmarks.isNotEmpty()){
+                        val interleaved = detectionResult.landmarks()[0].flatMap { listOf(it.x(), it.y()) }
+                        onResult(Landmark(landmarks = interleaved))
                     }
 
                     scope.launch(Dispatchers.Main) {

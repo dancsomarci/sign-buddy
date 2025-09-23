@@ -74,11 +74,16 @@ fun LandmarkRecordingScreen(
                                 fontSize = 20.sp,
                                 color = Color.Gray
                             )
-//                            Text(
-//                                text = String.format("%.2f", state.confidence),
-//                                fontSize = 16.sp,
-//                                color = Color.Gray
-//                            )
+                            Text(
+                                text = String.format("%.2f", state.confidence),
+                                fontSize = 16.sp,
+                                color = Color.Gray
+                            )
+                            Text(
+                                text = "${state.inferenceTime}ms",
+                                fontSize = 16.sp,
+                                color = Color.Gray
+                            )
                         }
                     }
                 )
